@@ -14,7 +14,7 @@ variables:
 
 stages:
 - stage: Maven@3
-    inputs:
+  inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
