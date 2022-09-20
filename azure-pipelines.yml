@@ -8,9 +8,13 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+  
 
-steps:
-- task: Maven@3
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -20,3 +24,19 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      {{ pool }}
+    steps:
+    - task: Docker@2
+      displayName: Build an image
+      inputs:
+        command: build
+        dockerfile: '{{ dockerfilePath }}'
+        tags: |
+          $(tag)
+
