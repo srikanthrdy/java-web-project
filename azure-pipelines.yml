@@ -9,13 +9,12 @@ trigger:
 pool:
   vmImage: ubuntu-latest
   
-
 variables:
   tag: '$(Build.BuildId)'
 
 stages:
 - stage: Maven@3
-  inputs:
+    inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
@@ -24,6 +23,7 @@ stages:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+    
 - stage: Build
   displayName: Build image
   jobs:
